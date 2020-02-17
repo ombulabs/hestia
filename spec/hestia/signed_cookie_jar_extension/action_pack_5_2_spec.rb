@@ -7,7 +7,7 @@ require "action_dispatch/middleware/cookies"
 require "hestia/railtie"
 
 module Hestia
-  if ActionPack::VERSION::MAJOR == 5 && ActionPack::VERSION::MINOR < 2
+  if ActionPack::VERSION::MAJOR == 5 && ActionPack::VERSION::MINOR == 2
     describe SignedCookieJarExtension::ActionPack5 do
       before do
         Rails.clean
@@ -15,7 +15,7 @@ module Hestia
       end
 
       it "is prepended into signed cookie jar ancestors" do
-        ActionDispatch::Cookies::SignedCookieJar.ancestors.first.must_equal SignedCookieJarExtension::ActionPack5
+        ActionDispatch::Cookies::SignedKeyRotatingCookieJar.ancestors.first.must_equal SignedCookieJarExtension::ActionPack5
       end
 
       it "defines initialize" do
@@ -28,7 +28,7 @@ module Hestia
         before do
           @secret = "a" * 30
           @parent_jar = FakeCookieJar.new(@secret)
-          @jar = ActionDispatch::Cookies::SignedCookieJar.new(@parent_jar)
+          @jar = ActionDispatch::Cookies::SignedKeyRotatingCookieJar.new(@parent_jar)
         end
 
         it "calls the original initialize method" do
@@ -56,7 +56,7 @@ module Hestia
           @parent_jar = FakeCookieJar.new(@secret)
           @deprecated_secret = "b" * 30
           Rails.application.config.deprecated_secret_token = @deprecated_secret
-          @jar = ActionDispatch::Cookies::SignedCookieJar.new(@parent_jar)
+          @jar = ActionDispatch::Cookies::SignedKeyRotatingCookieJar.new(@parent_jar)
         end
 
         it "calls the original initialize method" do

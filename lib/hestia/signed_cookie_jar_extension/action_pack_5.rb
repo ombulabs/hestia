@@ -24,7 +24,7 @@ module Hestia
         end
 
         # Grab the `config.secret_token` value from its generator
-        active_secret = key_generator.generate_key(request.signed_cookie_salt)
+        active_secret = Rails.application.key_generator.generate_key(request.signed_cookie_salt)
 
         # Take the deprecated secrets through the same generator code
         deprecated_secrets.map do |secret|

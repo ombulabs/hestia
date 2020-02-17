@@ -19,6 +19,14 @@ unless defined?(Rails)
       def config
         @config ||= FakeConfig.new
       end
+
+      def key_generator
+        Class.new do
+          def generate_key(salt)
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          end
+        end.new
+      end
     end
 
     class FakeConfig
