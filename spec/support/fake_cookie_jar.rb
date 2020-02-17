@@ -15,16 +15,14 @@ class FakeCookieJar
   end
 
   def cookies_rotations
-  	Sasa.new
-  end
-end
-
-class Sasa
-	def signed
-		[Class.new do
+    Class.new do
+      def signed
+        [Class.new do
           def key_generator
             ActiveSupport::KeyGenerator.new("secret")
           end
         end.new]
-	end
+      end
+    end.new
+  end
 end
